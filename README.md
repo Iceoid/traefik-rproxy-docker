@@ -1,4 +1,5 @@
 ##### Simple auto cert reverse proxy
+### You can run the prep.sh script to initialize the files needed.
 ### Need to add a .env file at the root directory of the project (same level as the docker-compose) with the following environnement variables:
 
 DOMAINNAME= 

@@ -32,7 +32,7 @@ read USERNAME
 echo "Enter a password:"
 read PASSWORD
 
-$(htpasswd -nb ${USERNAME} ${PASSWORD}) >> .htpasswd
+echo $(htpasswd -nb ${USERNAME} ${PASSWORD}) >> .htpasswd
 chmod 600 .htpasswd
 
 echo "Done!"

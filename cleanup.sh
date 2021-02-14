@@ -1,7 +1,7 @@
 #!/bin/bash
-sudo docker stop traefik traefik_website
-sudo docker rm traefik traefik_website
-sudo docker network rm traefik_net
+docker stop traefik traefik_website
+docker rm traefik traefik_website
+docker network rm traefik_net
 
 rm -fR -i website/html/*
 

@@ -49,17 +49,17 @@ if [[ "${initResponse}" =~ ^([yY]|[yY][eE][sS])$ ]]; then
         fi
         echo "Your passwords do not match!"
     done
-    # TODO: verify password
 
     echo $(htpasswd -nb ${USERNAME} ${PASSWORD}) >> .htpasswd
     chmod 600 .htpasswd
 fi
 
 # Ask if user wants to copy website files
-read -r -p "Would you like to copy files in? [y/N] " response
+read -r -p "Would you like to copy files in? (This will delete all files in website/html.) [y/N] " response
 if [[ "${response}" =~ ^([yY]|[yY][eE][sS])$ ]]; then
     echo "Enter dir path of files:"
     read dirPath
+    rm -Rf website/html/*
     cp -a ${dirPath}/. website/html/
 fi
 

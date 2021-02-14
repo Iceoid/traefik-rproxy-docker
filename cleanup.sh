@@ -1,6 +1,5 @@
 #!/bin/bash
-docker stop traefik traefik_website
-docker rm traefik traefik_website
+docker-compose down
 docker network rm traefik_net
 
 rm -fR -i website/html/*

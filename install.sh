@@ -64,7 +64,7 @@ if [[ "${response}" =~ ^([yY]|[yY][eE][sS])$ ]]; then
 fi
 
 echo "Creating docker network: traefik_net"
-docker network create traefik_net 
+docker network create traefik_net
 
 docker-compose up -d
 docker ps

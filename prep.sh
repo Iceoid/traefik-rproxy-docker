@@ -4,12 +4,12 @@ touch conf/acme.json
 chmod 600 conf/acme.json
 
 touch .env
-"# Domain name and cloudflare credentials" >> .env
+echo "# Domain name and cloudflare credentials" >> .env
 echo "Enter the domain name to be used:"
 read DOMAINNAME
-"DOMAINNAME=${DOMAINNAME}" >> .env
-"CF_API_EMAIL=" >> .env
-"CF_API_KEY=" >> .env
+echo "DOMAINNAME=${DOMAINNAME}" >> .env
+echo "CF_API_EMAIL=" >> .env
+echo "CF_API_KEY=" >> .env
 
 echo "You need to enter your cloudflare credentials in the .env file."
 
@@ -23,7 +23,7 @@ echo "Enter a password:"
 read PASSWORD
 
 USER_HASHEDPWD=${htpasswd -nb $USERNAME $PASSWORD}
-${USER_HASHEDPWD} >> .htpasswd
+echo "${USER_HASHEDPWD}" >> .htpasswd
 chmod 600 .htpasswd
 
 echo "Done!"

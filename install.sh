@@ -6,7 +6,13 @@ echo "installing dependencies...enter sudo password if necessary:"
 sudo apt update -y && sudo apt install apache2-utils docker-ce docker-ce-cli containerd.io
 sudo usermod -aG docker $USER
 
-read -r "Would you like (re)initialise the sensitive files? [y/N] " initResponse
+read -rp "Would you like to cleanup before install? [y/N] " cleanupResponse
+if [[ "${cleanupResponse}" =~ ^([yY]|[yY][eE][sS])$ ]]; then
+    echo "Starting cleanup!"$'\n'
+    bash cleanup.sh
+fi
+
+read -rp "Would you like initialise the sensitive files? [y/N] " initResponse
 if [[ "${initResponse}" =~ ^([yY]|[yY][eE][sS])$ ]]; then
 
     # create an empty json for ssl certificate with the proper permissions
@@ -19,37 +25,35 @@ if [[ "${initResponse}" =~ ^([yY]|[yY][eE][sS])$ ]]; then
     > .env
 
     echo "# Domain name and cloudflare credentials" >> .env
-    echo "Enter the domain name to be used:"
-    read DOMAINNAME
+
+    read -rp "Enter the domain name to be used:"$'\n' DOMAINNAME
     echo "DOMAINNAME=${DOMAINNAME}" >> .env
 
-    echo "Enter a sub-domain name for the website:"
-    read SUBDOMAINNAME
+    read -rp "Enter a sub-domain name for the website:"$'\n' SUBDOMAINNAME
     echo "SUBDOMAINNAME=${SUBDOMAINNAME}" >> .env
 
-    echo "Enter your cloudflare email:"
-    read CF_EMAIL
+    read -rp "Enter your cloudflare email:"$'\n' CF_EMAIL
     echo "CF_API_EMAIL=${CF_EMAIL}" >> .env
 
-    echo "Enter your cloudflare Global API Key:"
-    read CF_API_KEY
+    read -rp "Enter your cloudflare Global API Key:"$'\n' CF_API_KEY
     echo "CF_API_KEY=${CF_API_KEY}" >> .env
+
     chmod 640 .env
 
     # create a user:hashed_password pair. This is for traefik basic authentication
     touch .htpasswd
     > .htpasswd
 
-    read -r "Enter a username:" USERNAME
+    read -rp "Enter a username:"$'\n' USERNAME
 
     PASSWD_WRONG=true
     while [[ "$PASSWD_WRONG"=true ]]; do
-        read -srep "Enter a password:"$'\n' PASSWORD
-        read -srep "Re-enter your password:"$'\n' PASSCHECK
+        read -srp "Enter a password:"$'\n' PASSWORD
+        read -srp "Re-enter your password:"$'\n' PASSCHECK
         if [[ "$PASSWORD" == "$PASSCHECK" ]]; then
             break
         fi
-        echo "Your passwords do not match!"
+        echo "Your passwords do not match!"$'\n'
     done
 
     echo $(htpasswd -nb ${USERNAME} ${PASSWORD}) >> .htpasswd
@@ -57,12 +61,12 @@ if [[ "${initResponse}" =~ ^([yY]|[yY][eE][sS])$ ]]; then
 fi
 
 # Ask if user wants to copy website files
-read -r -p "Would you like to copy files in? (This will delete all files in website/html.) [y/N] " response
+read -rp "Would you like to copy files in? (This will delete all files in website/html.) [y/N] " response
 if [[ "${response}" =~ ^([yY]|[yY][eE][sS])$ ]]; then
     echo "Enter dir path of files:"
     read dirPath
     rm -Rf website/html/*
-    cp -a ${dirPath}/. website/html/
+    cp -a $dirPath/. website/html/
 fi
 
 echo "Creating docker network: traefik_net"

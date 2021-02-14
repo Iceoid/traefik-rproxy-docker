@@ -1,18 +1,29 @@
 #!/bin/bash
+
+# create an empty json for ssl certificate with the proper permissions
 touch conf/acme.json
 > conf/acme.json
 chmod 600 conf/acme.json
 
+# create a local environment variables file to pass to docker
 touch .env
 echo "# Domain name and cloudflare credentials" >> .env
 echo "Enter the domain name to be used:"
 read DOMAINNAME
 echo "DOMAINNAME=${DOMAINNAME}" >> .env
-echo "CF_API_EMAIL=" >> .env
-echo "CF_API_KEY=" >> .env
 
+echo "Enter your cloudflare email:"
+read CF_EMAIL
+echo "CF_API_EMAIL=${CF_EMAIL}" >> .env
+
+echo "Enter your cloudflare Global API Key:"
+read CF_API_KEY
+echo "CF_API_KEY=${CF_API_KEY}" >> .env
+chmod 640 .env
+
+# create a user:hashed_password pair. This is for traefik basic authentication
 touch .htpasswd
-echo "executing apt update && apt install apache2-utils...enter sudo password:"
+echo "executing apt update && apt install apache2-utils...enter sudo password if necessary:"
 sudo apt update -y && sudo apt install apache2-utils -y
 
 echo "Enter a username:"
@@ -21,8 +32,7 @@ read USERNAME
 echo "Enter a password:"
 read PASSWORD
 
-USER_HASHEDPWD=$(htpasswd -nb ${USERNAME} ${PASSWORD})
-echo "${USER_HASHEDPWD}" >> .htpasswd
+$(htpasswd -nb ${USERNAME} ${PASSWORD}) >> .htpasswd
 chmod 600 .htpasswd
 
 echo "Done!"

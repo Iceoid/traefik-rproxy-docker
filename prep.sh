@@ -12,6 +12,10 @@ echo "Enter the domain name to be used:"
 read DOMAINNAME
 echo "DOMAINNAME=${DOMAINNAME}" >> .env
 
+echo "Enter a sub-domain name for the website:"
+read SUBDOMAINNAME
+echo "SUBDOMAINNAME=${SUBDOMAINNAME}" >> .env
+
 echo "Enter your cloudflare email:"
 read CF_EMAIL
 echo "CF_API_EMAIL=${CF_EMAIL}" >> .env

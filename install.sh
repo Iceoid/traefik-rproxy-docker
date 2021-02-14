@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: add an optional 2nd subdomain registration for the website (possibly only the domain name)
+
 echo "installing dependencies...enter sudo password if necessary:"
 sudo apt update -y && sudo apt install apache2-utils docker-ce docker-ce-cli containerd.io
 sudo usermod -aG docker $USER

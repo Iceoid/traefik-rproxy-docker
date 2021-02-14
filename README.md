@@ -1,6 +1,6 @@
-##### Simple auto cert reverse proxy
+##### Simple auto cert reverse proxy for a static web page
 ### You can run the prep.sh script to initialize the files needed.
-### Need to add a .env file at the root directory of the project (same level as the docker-compose) with the following environnement variables:
+### Copy the website's files in the website/html folder.
 
 DOMAINNAME= 
 CF_API_EMAIL= 

@@ -39,5 +39,7 @@ read -s PASSWORD
 echo $(htpasswd -nb ${USERNAME} ${PASSWORD}) >> .htpasswd
 chmod 600 .htpasswd
 
+sudo docker network create traefik_net 
+
 echo "Done!"
 echo "You still need to enter your cloudflare credentials in the .env file."

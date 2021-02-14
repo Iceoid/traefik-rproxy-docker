@@ -3,5 +3,9 @@
 .htpasswd
 conf/acme.json
 
+# website files
+website/html/*
+!website/html/.gitkeep
+
 # logs
 *.log

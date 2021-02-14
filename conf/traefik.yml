@@ -45,6 +45,6 @@ certificatesResolvers:
       keyType: EC256
       dnsChallenge:
         provider: cloudflare
-#        resolvers:
+        resolvers:
 #          - "1.1.1.1:53" #not tested without
 #          - "1.0.0.1:53" #not tested without

@@ -47,5 +47,5 @@ services:
       traefik.enable: true
       traefik.http.routers.website.entrypoints: websecure
       traefik.http.routers.website.rule: Host(`${SUBDOMAINNAME}.${DOMAINNAME}`)
-      traefik.http.routers.website.middlewares: redirect-web-to-websecure@internal, chain-no-auth@file
+      traefik.http.routers.website.middlewares: chain-no-auth@file
       traefik.http.routers.website.tls: true

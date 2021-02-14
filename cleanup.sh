@@ -7,4 +7,4 @@ rm -fR -i website/html/.
 
 rm -f -i .env
 rm -f -i .htpasswd
-rm -f -i conf/acme.conf
+rm -f -i conf/acme.json

@@ -66,7 +66,7 @@ if [[ "${response}" =~ ^([yY]|[yY][eE][sS])$ ]]; then
     echo "Enter dir path of files:"
     read dirPath
     rm -Rf website/html/*
-    cp -a $dirPath/. website/html/
+    cp -a ${dirPath}/. website/html/
 fi
 
 echo "Creating docker network: traefik_net"

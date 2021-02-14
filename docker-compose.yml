@@ -11,6 +11,8 @@ services:
     restart: unless-stopped
     networks: 
       - traefik_net
+    command:
+      - --certificatesresolvers.letsencrypt.acme.email=${CF_API_EMAIL}"
     environment:
       - CF_API_EMAIL=${CF_API_EMAIL}
       - CF_API_KEY=${CF_API_KEY}

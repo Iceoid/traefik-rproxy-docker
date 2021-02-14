@@ -36,10 +36,15 @@ read USERNAME
 echo "Enter a password:"
 read -s PASSWORD
 
+# TODO: verify password
+
 echo $(htpasswd -nb ${USERNAME} ${PASSWORD}) >> .htpasswd
 chmod 600 .htpasswd
 
+echo "Creating docker network: traefik_net"
 sudo docker network create traefik_net 
+
+# TODO: ask if user wants to copy website directory
 
 echo "Done!"
 echo "You still need to enter your cloudflare credentials in the .env file."

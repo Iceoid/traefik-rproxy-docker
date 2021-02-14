@@ -38,7 +38,7 @@ entryPoints:
 certificatesResolvers:
   letsencrypt:
     acme:
-      email: charles.jobin@gmail.com
+      email: {{ env CF_API_EMAIL }}
       caServer: https://acme-staging-v02.api.letsencrypt.org/directory
 #      caServer: https://acme-v02.api.letsencrypt.org/directory
       storage: acme.json
@@ -46,5 +46,5 @@ certificatesResolvers:
       dnsChallenge:
         provider: cloudflare
         resolvers:
-#          - "1.1.1.1:53" #not tested without
-#          - "1.0.0.1:53" #not tested without
+          - "1.1.1.1:53" #not tested without
+          - "1.0.0.1:53" #not tested without

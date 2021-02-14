@@ -4,7 +4,7 @@ echo "installing dependencies...enter sudo password if necessary:"
 sudo apt update -y && sudo apt install apache2-utils docker-ce docker-ce-cli containerd.io
 sudo usermod -aG docker $USER
 
-read -r -p "Would you like (re)initialise the sensitive files? [y/N] " initResponse
+read -r "Would you like (re)initialise the sensitive files? [y/N] " initResponse
 if [[ "${initResponse}" =~ ^([yY]|[yY][eE][sS])$ ]]; then
 
     # create an empty json for ssl certificate with the proper permissions
@@ -14,6 +14,8 @@ if [[ "${initResponse}" =~ ^([yY]|[yY][eE][sS])$ ]]; then
 
     # create a local environment variables file to pass to docker
     touch .env
+    > .env
+
     echo "# Domain name and cloudflare credentials" >> .env
     echo "Enter the domain name to be used:"
     read DOMAINNAME
@@ -34,13 +36,19 @@ if [[ "${initResponse}" =~ ^([yY]|[yY][eE][sS])$ ]]; then
 
     # create a user:hashed_password pair. This is for traefik basic authentication
     touch .htpasswd
+    > .htpasswd
 
-    echo "Enter a username:"
-    read USERNAME
+    read -r "Enter a username:" USERNAME
 
-    echo "Enter a password:"
-    read -s PASSWORD
-
+    PASSWD_WRONG=true
+    while [[ "$PASSWD_WRONG"=true ]]; do
+        read -srep "Enter a password:"$'\n' PASSWORD
+        read -srep "Re-enter your password:"$'\n' PASSCHECK
+        if [[ "$PASSWORD" == "$PASSCHECK" ]]; then
+            break
+        fi
+        echo "Your passwords do not match!"
+    done
     # TODO: verify password
 
     echo $(htpasswd -nb ${USERNAME} ${PASSWORD}) >> .htpasswd
@@ -54,7 +62,6 @@ if [[ "${response}" =~ ^([yY]|[yY][eE][sS])$ ]]; then
     read dirPath
     cp -a ${dirPath}/. website/html/
 fi
-
 
 echo "Creating docker network: traefik_net"
 docker network create traefik_net 

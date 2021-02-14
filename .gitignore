@@ -1,0 +1,7 @@
+# sensitive information
+.env
+.htpasswd
+conf/acme.json
+
+# logs
+*.log

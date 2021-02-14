@@ -27,8 +27,9 @@ chmod 640 .env
 
 # create a user:hashed_password pair. This is for traefik basic authentication
 touch .htpasswd
-echo "executing apt update && apt install apache2-utils...enter sudo password if necessary:"
-sudo apt update -y && sudo apt install apache2-utils -y
+echo "installing dependencies...enter sudo password if necessary:"
+sudo apt update -y && sudo apt install apache2-utils docker-ce docker-ce-cli containerd.io
+sudo usermod -aG docker $USER
 
 echo "Enter a username:"
 read USERNAME
@@ -41,9 +42,19 @@ read -s PASSWORD
 echo $(htpasswd -nb ${USERNAME} ${PASSWORD}) >> .htpasswd
 chmod 600 .htpasswd
 
-echo "Creating docker network: traefik_net"
-sudo docker network create traefik_net 
-
 # TODO: ask if user wants to copy website directory
+read -r -p "Would you like to copy files in? [y/N] " response
+if [[ "${response}" =~ ^([yY]|[yY][eE][sS])$ ]]; then
+    echo "Enter dir path of files:"
+    read dirPath
+    cp -a ${dirPath}/. website/html/
+fi
+
+
+echo "Creating docker network: traefik_net"
+docker network create traefik_net 
+
+docker-compose up -d
+docker ps
 
 echo "Done!"

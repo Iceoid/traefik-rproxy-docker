@@ -11,8 +11,9 @@
 ### 1. Create a .env file and have those 3 environment variables filled in. (at the root of the project, with 0600 permissions)
 
 DOMAINNAME=example.com <br />
-CF_API_EMAIL=your.cloudflare@email.com<br />
-CF_API_KEY=(this is your CloudFlare's Global API Key)<br />
+SUBDOMAINNAME=www <br />
+CF_API_EMAIL=your.cloudflare@email.com <br />
+CF_API_KEY=1q2w3e4r5t6y7u8i9o0p #(replace with your CloudFlare's Global API Key) <br />
 
 ### 2. Add a .htpasswd file to the root of the project. (with 0640 permissions)
 #### to get a .htpasswd formated password: get the apt package 'apache2-utils' and use (replace *username* and *password*):

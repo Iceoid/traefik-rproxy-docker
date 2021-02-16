@@ -1,13 +1,13 @@
 # Simple auto-cert reverse proxy for a static web page.
 
-## Run the install.sh script to get everything in order.
-
-## For manual install:
 ### Prerequisites:
     - Having docker and docker-compose installed.
     - Have a domain name, pointing to the IP address of the machine you are installing this on.
     - Have your domain's nameservers on cloudflare (we are using dns-cloudflare module to get SSL certificates).
 
+## Run the install.sh script to get everything in order.
+
+## For manual install:
 ### 1. Create a .env file and have those 3 environment variables filled in. (at the root of the project, with 0600 permissions)
 
 DOMAINNAME=example.com <br />

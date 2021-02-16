@@ -1,0 +1,31 @@
+http:
+  middlewares:
+    chain-no-auth:
+      chain:
+        middlewares:
+          - security
+          - rate-limit
+
+    chain-no-auth-ws:
+      chain:
+        middlewares:
+          - security
+          - websockets
+          - rate-limit
+
+    chain-auth:
+      chain:
+        middlewares:
+          - basic-Auth
+          - security
+          - rate-limit
+
+    chain-auth-ws:
+      chain:
+        middlewares:
+          - basic-Auth
+          - security
+          - websockets
+          - rate-limit
+
+        

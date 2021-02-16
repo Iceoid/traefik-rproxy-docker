@@ -1,0 +1,52 @@
+version: '3.6'
+
+networks:
+  traefik_net:
+    external: true
+
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:livarot
+    restart: unless-stopped
+    networks: 
+      - traefik_net
+    environment:
+      - CF_API_EMAIL=${CF_API_EMAIL}
+      - CF_API_KEY=${CF_API_KEY}
+      - DOMAINNAME=${DOMAINNAME}
+      - TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_EMAIL=${CF_API_EMAIL}
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${PWD}/conf/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ${PWD}/conf/dynamic:/etc/traefik/dynamic:ro
+      - ${PWD}/conf/acme.json:/acme.json
+      - ${PWD}/logs/traefik.log:/etc/traefik/applog.log
+      - ${PWD}/.htpasswd:/shared/.htpasswd:ro
+    labels:
+      traefik.enable: true
+      traefik.http.routers.traefik-secure.entrypoints: websecure
+      traefik.http.routers.traefik-secure.rule: Host(`traefik.${DOMAINNAME}`)
+      traefik.http.routers.traefik-secure.middlewares: basic-Auth@file
+      traefik.http.routers.traefik-secure.tls: true
+      traefik.http.routers.traefik-secure.tls.certresolver: letsencrypt
+      traefik.http.routers.traefik-secure.tls.domains[0].main: "${DOMAINNAME}"
+      traefik.http.routers.traefik-secure.tls.domains[0].sans: "*.${DOMAINNAME}"
+      traefik.http.routers.traefik-secure.service: api@internal
+  website:
+    container_name: traefik_website
+    image: nginx:stable
+    restart: unless-stopped
+    networks: 
+      - traefik_net
+    volumes:
+      - ./website/html:/usr/share/nginx/html
+    labels:
+      traefik.enable: true
+      traefik.http.routers.website.entrypoints: websecure
+      traefik.http.routers.website.rule: Host(`${SUBDOMAINNAME}.${DOMAINNAME}`)
+      traefik.http.routers.website.middlewares: chain-no-auth@file
+      traefik.http.routers.website.tls: true

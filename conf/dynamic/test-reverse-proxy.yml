@@ -1,0 +1,24 @@
+http:
+  routers:
+    test-router:
+      service: test-service
+      rule: "Host(`test.{{ env "DOMAINNAME" }}`)"
+      entryPoints:
+        - "websecure"
+      middlewares: 
+        - security
+        - test-redirectregex
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    test-service:
+      loadBalancer:
+        servers:
+          - url: "https://redirected.{{ env "DOMAINNAME" }}"
+
+  middlewares:
+    test-redirectregex:
+      redirectRegex:
+        regex: "test.{{ env "DOMAINNAME" }}"
+        replacement: "redirected.{{ env "DOMAINNAME" }}"
